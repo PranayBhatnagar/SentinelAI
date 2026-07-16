@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout-load-generator
+  namespace: demo
+  labels:
+    app: checkout-load-generator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: checkout-load-generator
+  template:
+    metadata:
+      labels:
+        app: checkout-load-generator
+    spec:
+      containers:
+        - name: load-generator
+          image: curlimages/curl:8.9.1
+          command:
+            - sh
+            - -c
+            - |
+              while true; do
+                curl -s -o /dev/null -X POST http://checkout-service:8080/checkout
+                sleep 0.2
+              done
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "16Mi"
+            limits:
+              cpu: "100m"
+              memory: "32Mi"

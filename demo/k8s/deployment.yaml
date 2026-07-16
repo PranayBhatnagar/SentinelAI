@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout-service
+  namespace: demo
+  labels:
+    app: checkout-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: checkout-service
+  template:
+    metadata:
+      labels:
+        app: checkout-service
+    spec:
+      containers:
+        - name: checkout-service
+          image: checkout-service:demo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            # Flipped to "true" by demo/scripts/trigger_incident.sh to simulate the
+            # "add response caching for performance" deploy that leaks memory.
+            - name: ENABLE_RESPONSE_CACHE
+              value: "false"
+            - name: BASE_ERROR_RATE
+              value: "0.01"
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "100Mi"
+            limits:
+              cpu: "250m"
+              memory: "200Mi"
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
