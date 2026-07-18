@@ -25,7 +25,7 @@ spec:
             # Flipped to "true" by demo/scripts/trigger_incident.sh to simulate the
             # "add response caching for performance" deploy that leaks memory.
             - name: ENABLE_RESPONSE_CACHE
-              value: "false"
+              value: "true"
             - name: BASE_ERROR_RATE
               value: "0.01"
           resources:
