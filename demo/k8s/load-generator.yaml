@@ -6,7 +6,7 @@ metadata:
   labels:
     app: checkout-load-generator
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: checkout-load-generator
