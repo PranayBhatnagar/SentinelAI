@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: checkout-service
-  namespace: demo
+  namespace: default
   labels:
     app: checkout-service
 spec:
@@ -22,8 +22,8 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            # Flipped to "true" by demo/scripts/trigger_incident.sh to simulate the
-            # "add response caching for performance" deploy that leaks memory.
+            # "true" simulates the "add response caching for performance" deploy
+            # that leaks memory; ArgoCD syncs this value from git.
             - name: ENABLE_RESPONSE_CACHE
               value: "true"
             - name: BASE_ERROR_RATE

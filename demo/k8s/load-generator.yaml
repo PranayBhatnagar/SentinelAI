@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: checkout-load-generator
-  namespace: demo
+  namespace: default
   labels:
     app: checkout-load-generator
 spec:
